@@ -156,8 +156,11 @@
 		05FC55681B831F94006CE5CE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+<<<<<<< HEAD
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
+=======
+>>>>>>> ba6e7551677b0fd422eb4d6691515651b8b98353
 				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = IkegamiYuki;
 				TargetAttributes = {
@@ -411,7 +414,10 @@
 				05FC55911B831F94006CE5CE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+<<<<<<< HEAD
 			defaultConfigurationName = Release;
+=======
+>>>>>>> ba6e7551677b0fd422eb4d6691515651b8b98353
 		};
 		05FC55921B831F94006CE5CE /* Build configuration list for PBXNativeTarget "countDownTests" */ = {
 			isa = XCConfigurationList;
@@ -420,7 +426,10 @@
 				05FC55941B831F94006CE5CE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+<<<<<<< HEAD
 			defaultConfigurationName = Release;
+=======
+>>>>>>> ba6e7551677b0fd422eb4d6691515651b8b98353
 		};
 /* End XCConfigurationList section */
 	};

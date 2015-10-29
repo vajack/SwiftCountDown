@@ -58,7 +58,6 @@ class ViewController: UIViewController {
             restMin = 0
             restSec = 0
         }else{
-            
             if(((tyear - nowComponents.year) == 1) && (tmonth <= nowComponents.month) && (tday < nowComponents.day)){
                 restYear = 0
             }else{
@@ -102,6 +101,7 @@ class ViewController: UIViewController {
     }
     
     func monthToDate(tyear:Int,tmonth:Int,tday:Int)->Int{
+
 
         var dateNum = tday
         var countYear = tyear
