@@ -26,9 +26,9 @@ class ViewController: UIViewController {
     }
     
     func targetTime(){
-        var tyear = 2015
-        var tmonth = 10
-        var tday = 28
+        let tyear = 2015
+        let tmonth = 12
+        let tday = 28
         getTime()
         restLabel.text = restTime(tyear,tmonth: tmonth,tday: tday)
         
@@ -45,11 +45,12 @@ class ViewController: UIViewController {
         
         let nowCalendar:NSCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
         
-        let nowComponents = nowCalendar.components(NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay | NSCalendarUnit.CalendarUnitHour | NSCalendarUnit.CalendarUnitMinute | NSCalendarUnit.CalendarUnitSecond | NSCalendarUnit.CalendarUnitWeekday, fromDate: nowDate)
+        let nowComponents = nowCalendar.components([NSCalendarUnit.Year, NSCalendarUnit.Month, NSCalendarUnit.Day, NSCalendarUnit.Hour, NSCalendarUnit.Minute, NSCalendarUnit.Second, NSCalendarUnit.Weekday], fromDate: nowDate)
         
         var restYear:Int,restMonth:Int,restDay:Int,restHour:Int,restMin:Int,restSec:Int
-        
-        if(tyear <= nowComponents.year && tmonth <= nowComponents.month ){
+       
+        //change this
+        if((tyear <= nowComponents.year) && (tmonth <= nowComponents.month) && (tday <= nowComponents.day)){
             restYear = 0
             restMonth = 0
             restDay = 0
@@ -57,7 +58,11 @@ class ViewController: UIViewController {
             restMin = 0
             restSec = 0
         }else{
-            restYear = tyear - Int(nowComponents.year)
+            if(((tyear - nowComponents.year) == 1) && (tmonth <= nowComponents.month) && (tday < nowComponents.day)){
+                restYear = 0
+            }else{
+                restYear = tyear - Int(nowComponents.year)
+            }
             restMonth = tmonth - Int(nowComponents.month)
             restDay = tday - Int(nowComponents.day) - 1
             restHour = 23 - Int(nowComponents.hour)
@@ -80,7 +85,7 @@ class ViewController: UIViewController {
         
         let nowCalendar:NSCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
         
-        let nowComponents = nowCalendar.components(NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay | NSCalendarUnit.CalendarUnitHour | NSCalendarUnit.CalendarUnitMinute | NSCalendarUnit.CalendarUnitSecond | NSCalendarUnit.CalendarUnitWeekday, fromDate: nowDate)
+        let nowComponents = nowCalendar.components([NSCalendarUnit.Year, NSCalendarUnit.Month, NSCalendarUnit.Day, NSCalendarUnit.Hour, NSCalendarUnit.Minute, NSCalendarUnit.Second, NSCalendarUnit.Weekday], fromDate: nowDate)
         
         let weekdayStr: Array = ["","月","火","水","木","金","土","日"]
         
@@ -97,41 +102,37 @@ class ViewController: UIViewController {
     
     func monthToDate(tyear:Int,tmonth:Int,tday:Int)->Int{
 
-        var dateNum = 0
+
+        var dateNum = tday
         var countYear = tyear
         var countMonth = tmonth
         
         
         //get future time
         var dateStr = "\(countYear)-\(countMonth)-\(tday)"
-        var date_fomatter:NSDateFormatter = NSDateFormatter()
+        let date_fomatter:NSDateFormatter = NSDateFormatter()
         date_fomatter.locale = NSLocale(localeIdentifier: "ja")
         date_fomatter.dateFormat = "yyyy/MM/dd"
-        var fuDate:NSDate = date_fomatter.dateFromString(dateStr)!
+        let fuDate:NSDate = date_fomatter.dateFromString(dateStr)!
         
         date_fomatter.stringFromDate(fuDate)
         
         let fuCalendar:NSCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
-        let fuComponents = fuCalendar.components(NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay, fromDate: fuDate)
+        let fuComponents = fuCalendar.components([NSCalendarUnit.Year, NSCalendarUnit.Month, NSCalendarUnit.Day], fromDate: fuDate)
         
         //get now time
         let nowDate:NSDate = NSDate()
         let nowCalendar:NSCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
-        let nowComponents = nowCalendar.components(NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay , fromDate: nowDate)
-        let nowDays = nowCalendar.rangeOfUnit(NSCalendarUnit.CalendarUnitDay, inUnit: NSCalendarUnit.CalendarUnitMonth, forDate: nowDate)
+        let nowComponents = nowCalendar.components([NSCalendarUnit.Year, NSCalendarUnit.Month, NSCalendarUnit.Day] , fromDate: nowDate)
+        let nowDays = nowCalendar.rangeOfUnit(NSCalendarUnit.Day, inUnit: NSCalendarUnit.Month, forDate: nowDate)
         
-        dateNum += tday
-        dateNum--
-        
-        if (countMonth == 1){
-            countMonth = 12
-            countYear--
-        }else{
-            countMonth--
-        }
-        
-        while(!(countYear == nowComponents.year && countMonth == nowComponents.month)){
-            let days = fuCalendar.rangeOfUnit(NSCalendarUnit.CalendarUnitDay, inUnit: NSCalendarUnit.CalendarUnitMonth, forDate: fuDate)
+        while(!((countYear == nowComponents.year) && (countMonth-1 == nowComponents.month))){
+            dateStr = "\(countYear)-\(countMonth)-\(tday)"
+            date_fomatter.dateFromString(dateStr)
+            date_fomatter.stringFromDate(fuDate)
+
+            let days = fuCalendar.rangeOfUnit(NSCalendarUnit.Day, inUnit: NSCalendarUnit.Month, forDate: fuDate)
+            
             dateNum += days.length
             
             if (countMonth == 1){
@@ -141,9 +142,6 @@ class ViewController: UIViewController {
                 countMonth--
             }
             
-            dateStr = "\(countYear)-\(countMonth)-\(tday)"
-            date_fomatter.dateFromString(dateStr)
-            date_fomatter.stringFromDate(fuDate)
         }
         
         var restDays = 0
